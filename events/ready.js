@@ -3,7 +3,6 @@ const { blue, red } = require('colors'),
       { owner, prefix } = require("../configs/config.json"),
       checkConnection = require("../fonctions/checkConnection"),
       { botlogs } = require('../configs/channels.json'),
-      remind = require("../models/reminds"),
       client = require("../index"),
       botconfig = require("../models/botconfig");
 

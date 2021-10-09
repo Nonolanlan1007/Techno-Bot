@@ -1,33 +1,32 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js"),
-  { prefix, owners, owner, mainguildid } = require("../configs/config.json"),
-  client = require("../index"),
-  { botlogs, ticketcategory, ticketslogs } = require('../configs/channels.json'),
-  { ticketsaccess } = require("../configs/roles.json"),
-  { escapeRegex, onCoolDown } = require("../fonctions/cooldown.js"),
-  bumpChecker = require("../fonctions/bumpChecker"),
-  
-  confirmMp = new MessageButton()
-  .setStyle("SUCCESS")
-  .setCustomId("confirmMpMessage")
-  .setEmoji("📥"),
-  deleteMp = new MessageButton()
-  .setStyle("DANGER")
-  .setCustomId("deleteMpTicket")
-  .setEmoji("🗑️")
-  rowMp = new MessageActionRow()
-  .addComponents(confirmMp),
-  rowDelete = new MessageActionRow()
-  .addComponents(deleteMp),
-  
-  mpEmbed = new MessageEmbed()
-  .setTitle("Support en MP")
-  .setColor(client.color)
-  .setDescription(`> **🇫🇷 ➜ Bonjour,\n> Voulez vous envoyer un message au support ?\n> Si oui, cliquez sur le bouton ci dessous.**\n\n> **🇺🇸 ➜ Hello,\n> Do you want to tell support ?\n> If yes, click on the button below.**`)
-  .setFooter(`YopBot Support System`),
-  deleteMpEmbed = new MessageEmbed()
-  .setTitle("Support en MP")
-  .setDescription("> **🇫🇷 ➜ Pour pouvoir supprimer le ticket, cliquez sur le bouton ci-dessous.\n> 🇺🇸 ➜ To delete the ticket, click on the button below.**")
-  .setFooter("YopBot Support System");
+      { prefix, owners, owner } = require("../configs/config.json"),
+      client = require("../index"),
+      { botlogs, ticketcategory, ticketslogs } = require('../configs/channels.json'),
+      { ticketsaccess } = require("../configs/roles.json"),
+      { escapeRegex, onCoolDown } = require("../fonctions/cooldown.js"),
+    
+      confirmMp = new MessageButton()
+      .setStyle("SUCCESS")
+      .setCustomId("confirmMpMessage")
+      .setEmoji("📥"),
+      deleteMp = new MessageButton()
+      .setStyle("DANGER")
+      .setCustomId("deleteMpTicket")
+      .setEmoji("🗑️")
+      rowMp = new MessageActionRow()
+      .addComponents(confirmMp),
+      rowDelete = new MessageActionRow()
+      .addComponents(deleteMp),
+    
+      mpEmbed = new MessageEmbed()
+      .setTitle("Support en MP")
+      .setColor(client.color)
+      .setDescription(`> **🇫🇷 ➜ Bonjour,\n> Voulez vous envoyer un message au support ?\n> Si oui, cliquez sur le bouton ci dessous.**\n\n> **🇺🇸 ➜ Hello,\n> Do you want to tell support ?\n> If yes, click on the button below.**`)
+      .setFooter(`Tchnosphère Support System`),
+      deleteMpEmbed = new MessageEmbed()
+      .setTitle("Support en MP")
+      .setDescription("> **🇫🇷 ➜ Pour pouvoir supprimer le ticket, cliquez sur le bouton ci-dessous.\n> 🇺🇸 ➜ To delete the ticket, click on the button below.**")
+      .setFooter(" Technoshpère Support System");
 
 client.on("messageCreate", async (message) => {
   bumpChecker(message);

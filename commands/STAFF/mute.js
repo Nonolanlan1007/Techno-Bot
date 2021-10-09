@@ -1,10 +1,8 @@
 const { Client, Message, MessageEmbed } = require('discord.js'),
       warns = require("../../models/sanction"),
-      { modlogs, botslogs } = require("../../configs/channels.json"),
+      { modlogs } = require("../../configs/channels.json"),
       botconfig = require("../../models/botconfig"),
-      { modrole, bypass, mute } = require("../../configs/roles.json"),
-      bots = require("../../models/bots");
-const { findOne } = require('../../models/sanction');
+      { modrole, bypass, mute } = require("../../configs/roles.json")
 
 module.exports = {
     name: 'mute',
@@ -25,38 +23,6 @@ module.exports = {
         if (member.roles.cache.has(bypass)) return message.reply(`**${client.no} ➜ Ce membre est imunisé contre les sanctions.**`)
         if (member.roles.cache.has(mute)) return message.reply(`**${client.no} ➜ Ce membre est déjà muet.**`)
         if (!args[1]) return message.reply(`**${client.no} ➜ Veuillez entrer une raison.**`)
-        const db = await botconfig.findOne();
-        if (member.user.bot) {
-            const db2 = await findOne({ botID: member.user.id })
-            if (!db2) return message.reply(`**${client.no} ➜ Ce bot n'est pas sur ma liste.**`)
-            try {
-                member.roles.add(mute)
-            }
-            catch {
-                return message.reply(`**${client.no} ➜ Zut alors ! Je n'ai pas la permission d'ajouter le rôle \`${message.guild.roles.cache.get(mute).name}\` à \`${member.user.tag}\`.**`)
-            }
-            const e = new MessageEmbed()
-            .setTitle("Nouvelle sanction :")
-            .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
-            .setColor(client.color)
-            .setTimestamp(new Date())
-            .addField(`:busts_in_silhouette: ➜ Utilisateur :`, `\`\`\`md\n# ${member.user.tag} ➜ ${member.user.id}\`\`\``)
-            .addField(`:dividers: ➜ Type :`, `\`\`\`md\n# MUTE\`\`\``)
-            .addField(`:newspaper2: ➜ Raison(s) :`, `\`\`\`md\n# ${args.slice(1).join(" ")}\`\`\``)
-            .addField(`:man_police_officer: ➜ Modérateur :`, `\`\`\`md\n# ${message.author.tag} ➜ ${message.author.id}\`\`\``)
-            .addField(`:1234: Code`, `\`\`\`md\n# ${db.warns + 1}\`\`\``)
-            const e2 = new MessageEmbed()
-            .setTitle("Réduction au silence...")
-            .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
-            .setColor(client.color)
-            .setTimestamp(new Date())
-            .setDescription(`Votre robot \`${member.user.tag}\` a été réduit au silence pour la raison suivante : \`\`\`${args.slice(1).join(" ")}\`\`\``)
-            .setFooter("Pour demander une reprise de voix, veuillez m'envoyer un Message Privé.")
-            client.channels.cache.get(botslogs).send({ content: `<@${db2.ownerID}>`, embeds: [e2] })
-            client.channels.cache.get(modlogs).send({ embeds: [e] })
-            return message.reply(`**${client.yes} ➜ ${member.user.tag} a été réduit au silence avec succès !**`)
-        }
-        if (!member.user.bot) {
             try {
                 member.roles.add(mute)
             }
@@ -96,4 +62,3 @@ module.exports = {
             return await botconfig.findOneAndUpdate({ $set: { warns: db.warns + 1 } }, { upsert: true })
         }
     }
-}
