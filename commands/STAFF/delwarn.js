@@ -1,21 +1,26 @@
-const { Client, Message, MessageEmbed } = require('discord.js'),
+'use strict';
+
+const Command = require("../../structure/Command.js"),
+      { MessageEmbed } = require('discord.js'),
       warns = require("../../models/sanction"),
       { modlogs } = require("../../configs/channels.json"),
       { modrole } = require("../../configs/roles.json");
 
-module.exports = {
-    name: 'unwarn',
-    categories : 'staff', 
-    permissions : modrole, 
-    description: 'Supprimer un avertissement.',
-    cooldown : 5,
-    usage: 'unwarn <warn id>',
-    /** 
-     * @param {Client} client 
-     * @param {Message} message
-     * @param {String[]} args
-     */
-    run: async(client, message, args) => {
+
+class Delwarn extends Command {
+    constructor() {
+        super({
+            name: 'delwarn',
+            category: 'staff',
+            description: 'Supprimer une sanction.',
+            usage: 'delwarn <id sanction>',
+            example: ["delwarn 16"],
+            perms: modrole,
+            cooldown: 30
+        });
+    }
+
+    async run(client, message, args) {
         if (!parseInt(args[0])) return message.reply(`**${client.no} ➜ Veuillez entrer un identifiant valide.**`)
         const db = await warns.findOne({ wrnID: Number(args[0]) });
         if (!db) return message.reply(`**${client.no} ➜ Sanction introuvable !**`)
@@ -29,7 +34,6 @@ module.exports = {
         .addField(`:dividers: ➜ Type :`, `\`\`\`md\n# WARN\`\`\``)
         .addField(`:newspaper2: ➜ Raison(s) :`, `\`\`\`md\n# ${db.reason}\`\`\``)
         .addField(`:man_police_officer: ➜ Modérateur :`, `\`\`\`md\n# ${message.author.tag} ➜ ${message.author.id}\`\`\``)
-        .addField(`:1234: Code`, `\`\`\`md\n# ${db.warns + 1}\`\`\``)
         const e2 = new MessageEmbed()
         .setTitle("Suppression de sanction :")
         .setThumbnail(member.displayAvatarURL({ dynamic: true }))
@@ -44,3 +48,5 @@ module.exports = {
         message.reply(`**${client.yes} ➜ Avertissement supprimé avec succès !**`)
     }
 }
+
+module.exports = new Delwarn;

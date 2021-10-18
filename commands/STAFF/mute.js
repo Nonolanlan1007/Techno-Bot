@@ -1,28 +1,36 @@
-const { Client, Message, MessageEmbed } = require('discord.js'),
+'use strict';
+
+const Command = require("../../structure/Command.js"),
+      { MessageEmbed } = require('discord.js'),
       warns = require("../../models/sanction"),
       { modlogs } = require("../../configs/channels.json"),
       botconfig = require("../../models/botconfig"),
       { modrole, bypass, mute } = require("../../configs/roles.json")
 
-module.exports = {
-    name: 'mute',
-    aliases: ['m'],
-    categories : 'staff', 
-    permissions : modrole, 
-    description: 'Rendre muet un membre.',
-    cooldown : 5,
-    usage: 'mute <id> <raison>',
-    /** 
-     * @param {Client} client 
-     * @param {Message} message
-     * @param {String[]} args
-     */
-    run: async(client, message, args) => {
-        const member = message.guild.members.cache.get(args[0]);
+class Mute extends Command {
+    constructor() {
+        super({
+            name: 'mute',
+            category: 'staff',
+            description: 'Rendre muet un membre.',
+            aliases: ["m"],
+            usage: 'mute <id> <raison>',
+            example: ["m 692374264476860507 Spam"],
+            perms: modrole,
+            cooldown: 60,
+            botPerms: ["EMBED_LINKS", "SEND_MESSAGES", "READ_MESSAGES", "MANAGE_ROLES"]
+        });
+    }
+
+    async run(client, message, args) {
+        const member = message.guild.members.fetch(args[0]);
         if (!member) return message.reply(`**${client.no} ➜ Veuillez entrer un identifiant valide.**`)
+        if (member.roles.highest.position >= message.member.roles.highest.position) return message.reply(`**${client.no} ➜ Ce membre est au même rang ou plus haut que vous dans la hiérarchie des rôles de ce serveur. Vous ne pouvez donc pas le sanctionner.**`)
         if (member.roles.cache.has(bypass)) return message.reply(`**${client.no} ➜ Ce membre est imunisé contre les sanctions.**`)
         if (member.roles.cache.has(mute)) return message.reply(`**${client.no} ➜ Ce membre est déjà muet.**`)
         if (!args[1]) return message.reply(`**${client.no} ➜ Veuillez entrer une raison.**`)
+        const db = await botconfig.findOne();
+        if (!member.user.bot) {
             try {
                 member.roles.add(mute)
             }
@@ -58,7 +66,10 @@ module.exports = {
                 e.addField(":warning: Avertissement :", "L'utilisateur n'a pas été prévenu(e) de sa santion !")
             })
             client.channels.cache.get(modlogs).send({ embeds: [e] })
-            message.reply(`**${client.yes} ➜ ${member.user.tag} a été averti avec succès !**`)
+            message.reply(`**${client.yes} ➜ ${member.user.tag} a été rendu muet avec succès !**`)
             return await botconfig.findOneAndUpdate({ $set: { warns: db.warns + 1 } }, { upsert: true })
         }
     }
+}
+
+module.exports = new Mute;

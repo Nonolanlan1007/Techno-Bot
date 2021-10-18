@@ -1,22 +1,23 @@
 {
-  "name": "tchno-bot",
+  "name": "techno-bot",
   "version": "1.0",
+  "description": "Bot privé multi-fonctions.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pm2 start index.js",
+    "restart": "pm2 restart index.js",
+    "list": "pm2 list",
+    "stop": "pm2 stop index.js",
+    "logs": "pm2 logs"
   },
   "author": "Nolhan#2508",
-  "license": "ISC",
   "dependencies": {
-    "ascii-table": "^0.0.9",
     "colors": "^1.4.0",
     "discord.js": "^13.2.0",
-    "fs": "^0.0.1-security",
-    "glob": "^7.1.7",
+    "figlet": "^1.5.0",
     "moment": "^2.29.1",
-    "mongoose": "^6.0.5",
-    "ms": "^3.0.0-canary.1",
-    "os": "^0.1.2",
+    "mongoose": "^6.0.10",
+    "pm2": "^5.1.2",
     "pretty-ms": "^7.0.1"
   }
 }

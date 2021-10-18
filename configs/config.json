@@ -1,12 +1,13 @@
 {
-    "token": "TOKEN DU BOT",
-    "prefix": "PREFIX",
-    "mongooseConnectionString": "MongoURI",
-    "color": "#f2ac34",
-    "owner": "ID DE L'OWNER",
+    "token": "TOKEN",
+    "prefix": "t!",
+    "mongooseConnectionString": "MONGO URL",
+    "color": "#FFFFF",
+    "owner": "ID OWNER",
     "owners": [
         "OWNER_1_ID",
         "OWNER_2_ID",
         "OWNER_3_ID"
-    ]
+    ],
+    "mainguildid": "GUILD ID"
 }

@@ -1,7 +1,10 @@
 {
-    "botlogs": "LE CHANNEL DE LOGS DU BOT",
-    "ticketslogs": "LE CHANNEL DE LOGS DES TICKETS",
-    "ticketcategory": "LA CATEGORIE POUR LES TICKETS",
+    "suggests": "LE SALON DES SUGGESTIONS",
+    "botlogs": "LE SALON DE LOGS DU BOT",
+    "ticketslogs": "LE SALON DE LOGS DES TICKETS",
+    "ticketcategory": "LA CATEGORIE DES TICKETS",
+    "avischannel": "LE CHANNEL DES AVIS",
     "welcomechannel": "LE CHANNEL DE BIENVENUE",
-    "modlogs": "LE CHANNEL DE LOGS DES SANCTIONS"
+    "modlogs": "LE SALON DE LOGS DE MODERATIONS",
+    "sugglogs": "LE SALON DES REPONSES AUX SUGGESTIONS"
 }
