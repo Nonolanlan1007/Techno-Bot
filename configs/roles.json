@@ -2,5 +2,22 @@
     "ticketsaccess": "LE ROLE QUI ACCEDE AUX TICKETS",
     "mute": "LE ROLE MUTED",
     "bypass": "LE ROLE BYPASS DE LA MODERATION",
-    "modrole": "LE ROLE MODERATEUR"
+    "modrole": "LE ROLE MODERATEUR",
+    "autorole": "LE ROLE A DONNER AUX NOUVEAUX MEMBRES",
+    "level_2": "",
+    "level_5": "",
+    "level_10": "",
+    "level_15": "",
+    "level_20": "",
+    "level_25": "",
+    "level_30": "",
+    "level_35": "",
+    "level_40": "",
+    "level_50": "",
+    "level_60": "",
+    "level_80": "",
+    "level_100": "",
+    "level_150": "",
+    "level_200": "",
+    "level_300": ""
 }

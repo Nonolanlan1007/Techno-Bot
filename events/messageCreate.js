@@ -5,8 +5,8 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js"),
       { botlogs, ticketcategory, ticketslogs } = require('../configs/channels.json'),
       { ticketsaccess } = require("../configs/roles.json"),
       { escapeRegex, onCoolDown } = require("../fonctions/cooldown.js"),
-      bumpChecker = require("../fonctions/bumpChecker"),
       user = require("../models/user"),
+      level = require("../models/level"),
       confirmMp = new MessageButton()
       .setStyle("SUCCESS")
       .setCustomId("confirmMpMessage")
@@ -31,7 +31,6 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js"),
       .setColor(color);
 
 module.exports = async(client, message) => {
-    bumpChecker(message);
   
     if (message.author.bot) return;
   
@@ -197,6 +196,31 @@ module.exports = async(client, message) => {
     }
 
   /* Guild System */
+
+  // levels system
+  const lvl = await level.findOne({ userID: message.author.id })
+  if (!lvl) {
+    if (!message.author.bot) {
+      new level({
+        userID: message.author.id,
+        level: 0,
+        xp_restant: 24,
+        msg_count: 1,
+        lvl: 25
+      })
+      message.reply(`**:tada: ➜ Félicitations <@${message.author.id}>, vous venez d'envoyer votre premier message ! Continuez comme ça pour tenter de gagner des rôles exclusifs !**`)
+    }
+  }
+  if (lvl) {
+    let xp = lvl.xp_restant - 1;
+    if (xp === 0) {
+      await level.findOneAndUpdate({ userID: message.author.id }, { $set: { level: lvl.level + 1, xp_restant: lvl.lvl + 50 - 1, lvl: lvl.lvl + 50, msg_count: lvl.msg_count + 1 } }, { upsert: true });
+      message.reply(`**:tada: ➜ Félicitations <@${message.author.id}>, vous venez de passer au niveau \`${lvl.level + 1}\` ! Jusqu'à maintenant, tu as envoyé \`${lvl.msg_count + 1}\` messages *ouah* !**`)
+    }
+    if (xp !== 0) {
+      await level.findOneAndUpdate({ userID: message.author.id }, { $set: { xp_restant: lvl.xp_restant - 1, msg_count: lvl.msg_count + 1 } }, { upsert: true });
+    }
+  }
 
   if (message.channel.partial) await message.channel.fetch();
   if (message.partial) await message.fetch();
