@@ -33,7 +33,7 @@ module.exports = async(client, data) => {
             });
 
             await user.send({
-                content: `> **🇫🇷 ➜ Votre ticket sur YopBot List à été fermé.\n> 🇺🇸 ➜ Your ticket on YopBot list has been closed.**`
+                content: `> **🇫🇷 ➜ Votre ticket sur 🌐・Technosphère・🌐 à été fermé.\n> 🇺🇸 ➜ Your ticket on 🌐・Technosphère・🌐 has been closed.**`
             });
             data.channel.send(`**${client.yes} ➜ Fermeture du ticket dans 10 secondes...**`)
             return setTimeout(() => {
