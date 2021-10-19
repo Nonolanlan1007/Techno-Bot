@@ -37,20 +37,5 @@ module.exports = async(client) => {
              await client.user.setActivity(activities[Math.floor(Math.random() * activities.length)], { type: "STREAMING", url: "https://twitch.tv/discord" });
              
              checkConnection(client);
-     
-             /* reminds */
-             const reminds = await remind.find();
-             if (!reminds || reminds.length == 0) return;
-             reminds.forEach(async x => {
-                 if (x.endsAt <= Date.now()) {
-                     const user = client.users.cache.get(x.userId);
-                     if (!user) return await remind.deleteOne({ userId: x.userId });
-     
-                     client.channels.cache.get(x.chanId).send({
-                         content: `<@${x.userId}>, je vous ai rappelé pour que vous puissiez bumper le serveur.`
-                     });
-                     await remind.deleteOne({ userId: x.userId });
-                 }
-             });
          }, 120000);
 };
