@@ -3,7 +3,7 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js"),
       { prefix, owners, owner, mainguildid, color } = require("../configs/config.json"),
       { botlogs, ticketcategory, ticketslogs } = require('../configs/channels.json'),
-      { ticketsaccess } = require("../configs/roles.json"),
+      roles = require("../configs/roles.json"),
       { escapeRegex, onCoolDown } = require("../fonctions/cooldown.js"),
       user = require("../models/user"),
       level = require("../models/level"),
@@ -88,7 +88,7 @@ module.exports = async(client, message) => {
                     id: guild.id,
                     deny: ["VIEW_CHANNEL"]
                   }, {
-                    id: ticketsaccess,
+                    id: roles.ticketsaccess,
                     allow: ["VIEW_CHANNEL", "READ_MESSAGE_HISTORY", "ADD_REACTIONS", "SEND_MESSAGES", "ATTACH_FILES"]
                   }
                 ],
@@ -157,7 +157,7 @@ module.exports = async(client, message) => {
       const user = await client.users.fetch(message.channel.topic);
       if (message.content.startsWith("!")) return
       if (message.author.bot) return
-      if (!message.member.roles.cache.has(ticketsaccess)) {
+      if (!message.member.roles.cache.has(roles.ticketsaccess)) {
         message.react("❌")
         return message.author.send(`**${client.no} ➜ Vous n'avez pas l'autorisation d'envoyer un message dans ce ticket.**`)
       }
@@ -216,6 +216,8 @@ module.exports = async(client, message) => {
     if (xp === 0) {
       await level.findOneAndUpdate({ userID: message.author.id }, { $set: { level: lvl.level + 1, xp_restant: lvl.lvl + 50 - 1, lvl: lvl.lvl + 50, msg_count: lvl.msg_count + 1 } }, { upsert: true });
       message.reply(`**:tada: ➜ Félicitations <@${message.author.id}>, vous venez de passer au niveau \`${lvl.level + 1}\` ! Jusqu'à maintenant, tu as envoyé \`${lvl.msg_count + 1}\` messages *ouah* !**`)
+      const reward = message.guild.roles.Cache.find(r => r.name === `⭐・${lvl.level + 1}`)
+      if (reward) message.member.roles.add(reward.id)
     }
     if (xp !== 0) {
       await level.findOneAndUpdate({ userID: message.author.id }, { $set: { xp_restant: lvl.xp_restant - 1, msg_count: lvl.msg_count + 1 } }, { upsert: true });
