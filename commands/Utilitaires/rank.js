@@ -16,8 +16,10 @@ class Rank extends Command {
     }
 
     async run(client, message, args) {
-        const member = message.mentions.members.first() || await message.guild.members.fetch(args[0]) || message.member;
-        const db = await level.findOne()
+        const member = message.mentions.users.first() || message.author;
+        const db = await level.findOne({ userID: member.id });
+        if (!db) return message.reply(`**${client.no} ➜ \`${member.tag}\` n'a pas encore envoyé de messages.**`)
+        message.reply(`**\`${member.tag}\` est au niveau \`${db.level}\`. Il a envoyé \`${db.msg_count}\` message(s). Il lui manque \`${db.xp_restant}\` avant de pouvoir passer au niveau \`${db.level + 1}\` !**`)
     }
 }
 

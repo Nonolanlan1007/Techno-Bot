@@ -19,7 +19,7 @@ class Leaderboard extends Command {
     }
 
     async run(client, message, args) {     
-    const usersdata = await level.find({ serverID: mainguildid });
+    const usersdata = await level.find();
 
     if (usersdata.length < 2) return message.channel.send(`**${client.no} ➜ Il n'y a pas assez de membres dans le classement pour que je puisse afficher en afficher un.**`)
     let array = usersdata.sort((a, b) => (a.msg_count < b.msg_count) ? 1 : -1).slice(0, 10);

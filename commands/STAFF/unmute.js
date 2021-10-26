@@ -5,8 +5,7 @@ const Command = require("../../structure/Command.js"),
       warns = require("../../models/sanction"),
       { modlogs, botslogs } = require("../../configs/channels.json"),
       botconfig = require("../../models/botconfig"),
-      { modrole, bypass, mute } = require("../../configs/roles.json"),
-      bots = require("../../models/bots");
+      { modrole, bypass, mute } = require("../../configs/roles.json");
 
 class Unmute extends Command {
     constructor() {

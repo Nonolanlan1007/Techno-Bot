@@ -5,7 +5,6 @@ const { blue, red, green } = require('colors'),
       { owner, prefix } = require("../configs/config.json"),
       checkConnection = require("../fonctions/checkConnection"),
       { botlogs } = require('../configs/channels.json'),
-      remind = require("../models/reminds"),
       botconfig = require("../models/botconfig");
 
 module.exports = async(client) => {

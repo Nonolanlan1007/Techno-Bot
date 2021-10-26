@@ -1,13 +1,13 @@
 {
-    "token": "TOKEN",
+    "token": "OTAxNTQwNDMyODkzMzI1NDQz.YXRW9Q.nqez-D9D8gJdV0ftQtUURIZ-hGU",
     "prefix": "t!",
-    "mongooseConnectionString": "MONGO URL",
+    "mongooseConnectionString": "mongodb+srv://TechnoBot:technobotaccess@cluster0.xxvcg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     "color": "#FFFFF",
-    "owner": "ID OWNER",
+    "owner": "692374264476860507",
     "owners": [
-        "OWNER_1_ID",
+        "707559278348730479",
         "OWNER_2_ID",
         "OWNER_3_ID"
     ],
-    "mainguildid": "GUILD ID"
+    "mainguildid": "896341535430438962"
 }

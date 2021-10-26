@@ -76,10 +76,12 @@ module.exports = async(client, message) => {
         if (button.user.id === message.author.id) {
           if (button.customId === "confirmMpMessage") { 
             let db = await user.findOne({ userID: message.author.id });
-            if (db.ticketsbl === true) {
+            if (db) {
+                if (db.ticketsbl === true) {
               await button.update({ content: `**${client.no} ➜ Vous êtes sur la liste noire des tickets. Vous ne pouvez donc pas contacter le STAFF.**`, embeds: [], components: [] })
               return collector.stop()
             }     
+            }
             if (!ticket) {
               guild.channels.create(`🎫・ticket-${message.author.discriminator}`, {
                 type: 'GUILD_TEXT',
@@ -196,7 +198,7 @@ module.exports = async(client, message) => {
     }
 
   /* Guild System */
-
+  if (message.guild.id !== "896341535430438962") return;
   // levels system
   const lvl = await level.findOne({ userID: message.author.id })
   if (!lvl) {
@@ -207,8 +209,8 @@ module.exports = async(client, message) => {
         xp_restant: 24,
         msg_count: 1,
         lvl: 25
-      })
-      message.reply(`**:tada: ➜ Félicitations <@${message.author.id}>, vous venez d'envoyer votre premier message ! Continuez comme ça pour tenter de gagner des rôles exclusifs !**`)
+      }).save()
+      message.reply({ content: `**:tada: ➜ Félicitations <@${message.author.id}>, vous venez d'envoyer votre premier message ! Continuez comme ça pour tenter de gagner des rôles exclusifs !**`, allowMentions: false })
     }
   }
   if (lvl) {
@@ -216,7 +218,7 @@ module.exports = async(client, message) => {
     if (xp === 0) {
       await level.findOneAndUpdate({ userID: message.author.id }, { $set: { level: lvl.level + 1, xp_restant: lvl.lvl + 50 - 1, lvl: lvl.lvl + 50, msg_count: lvl.msg_count + 1 } }, { upsert: true });
       message.reply(`**:tada: ➜ Félicitations <@${message.author.id}>, vous venez de passer au niveau \`${lvl.level + 1}\` ! Jusqu'à maintenant, tu as envoyé \`${lvl.msg_count + 1}\` messages *ouah* !**`)
-      const reward = message.guild.roles.Cache.find(r => r.name === `⭐・${lvl.level + 1}`)
+      const reward = message.guild.roles.cache.find(r => r.name === `⭐・${lvl.level + 1}`)
       if (reward) message.member.roles.add(reward.id)
     }
     if (xp !== 0) {
